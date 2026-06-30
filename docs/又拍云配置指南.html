@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>又拍云配置指南 - AURA Studio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box }
+  body { font-family: 'Noto Sans SC', 'Microsoft YaHei', 'SimHei', sans-serif; font-size: 14px; line-height: 1.9; color: #1a1a1a; background: #f5f7fa; padding: 20px }
+  .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden }
+  .header { background: linear-gradient(135deg, #4d8cfc, #a277ff); color: white; padding: 32px 40px }
+  .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px }
+  .header p { font-size: 13px; opacity: 0.85 }
+  .content { padding: 32px 40px }
+
+  h1 { color: #4d8cfc; border-bottom: 2px solid #4d8cfc; padding-bottom: 8px; margin: 28px 0 16px; font-size: 20px }
+  h2 { color: #a277ff; margin: 24px 0 12px; font-size: 17px }
+  h3 { color: #44eebb; margin: 16px 0 8px; font-size: 14px }
+  p { margin: 8px 0 }
+  a { color: #4d8cfc; text-decoration: none }
+  a:hover { text-decoration: underline }
+  code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #c7254e }
+  pre { background: #1a1a2e; color: #e8e9ed; padding: 14px 18px; border-radius: 8px; font-size: 12px; overflow-x: auto; margin: 12px 0; line-height: 1.6 }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 13px }
+  th { background: #4d8cfc; color: white; padding: 8px 12px; text-align: left }
+  td { border: 1px solid #ddd; padding: 7px 12px }
+  tr:nth-child(even) td { background: #f9f9f9 }
+  blockquote { border-left: 3px solid #4d8cfc; margin: 10px 0; padding: 6px 16px; background: #f0f7ff; font-size: 13px }
+  .tip { background: #f0f7ff; border-left: 3px solid #4d8cfc; padding: 10px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px }
+  .warn { background: #fff3f0; border-left: 3px solid #ff6b9d; padding: 10px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px }
+  .important { background: #fff8e1; border-left: 3px solid #ffc107; padding: 10px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px }
+  ol, ul { padding-left: 20px; margin: 8px 0 }
+  li { margin: 4px 0 }
+  @media print {
+    body { background: white; padding: 0 }
+    .container { box-shadow: none }
+    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>☁️ 又拍云 FORM API 配置指南</h1>
+    <p>AURA Studio v2.0.0 · 适用版本 2.0.0+</p>
+  </div>
+ <div class="content">
+
+<h2>🎯 你需要准备什么？</h2>
+<p>AURA Studio 使用又拍云 <strong>FORM API 前端直传</strong>（不消耗服务器带宽），你需要获取以下 <strong>4 个信息</strong> 填入设置：</p>
+<table>
+<tr><th>配置项</th><th>说明</th><th>示例</th></tr>
+<tr><td><strong>操作员名称（Access Key）</strong></td><td>操作员账号</td><td><code>test-operator</code></td></tr>
+<tr><td><strong>表单 API 密钥（Secret Key）</strong></td><td>表单上传专用密钥（<strong>不是操作员密码！</strong>）</td><td><code>xxxxxxxxxxxxxxxx</code></td></tr>
+<tr><td><strong>服务名称（Bucket）</strong></td><td>云存储服务名称</td><td><code>aura-studio-releases</code></td></tr>
+<tr><td><strong>加速域名（CDN）</strong></td><td>文件访问域名</td><td><code>aura-studio-releases.test.upcdn.net</code></td></tr>
+</table>
+<p>💡 <strong>接入端点（Endpoint）</strong>：仅 S3 兼容模式需要，使用 FORM API 直传时<strong>可留空</strong>。</p>
+
+<h2>📦 第一步：注册又拍云账号</h2>
+<h3>1.1 访问注册页面</h3>
+<p>打开又拍云注册页面完成注册：</p>
+<p>👉 <a href="https://console.upyun.com/register/?invite=R3d6kOy0E" target="_blank">https://console.upyun.com/register/?invite=R3d6kOy0E</a></p>
+<h3>1.2 填写注册信息</h3>
+<ol>
+<li>输入<strong>手机号</strong> / <strong>邮箱</strong></li>
+<li>设置<strong>密码</strong></li>
+<li>勾选<strong>用户协议</strong></li>
+<li>点击 <strong>注册</strong></li>
+</ol>
+<h3>1.3 完成实名认证</h3>
+<blockquote>⚠️ <strong>必须完成实名认证才能使用云存储服务！</strong></blockquote>
+<ol>
+<li>登录后，进入 <strong>[账号管理]</strong> → <strong>[实名认证]</strong></li>
+<li>选择 <strong>个人认证</strong> 或 <strong>企业认证</strong></li>
+<li>上传身份证 / 营业执照</li>
+<li>等待审核（通常 1-2 个工作日）</li>
+</ol>
+
+<h2>🗂️ 第二步：创建云存储服务（Bucket）</h2>
+<h3>2.1 进入云存储控制台</h3>
+<ol>
+<li>登录 <a href="https://console.upyun.com" target="_blank">又拍云控制台</a></li>
+<li>点击左侧菜单 <strong>[云产品]</strong> → <strong>[云存储]</strong></li>
+<li>点击 <strong>[创建服务]</strong> 按钮</li>
+</ol>
+<h3>2.2 填写服务信息</h3>
+<table>
+<tr><th>字段</th><th>怎么填</th><th>说明</th></tr>
+<tr><td><strong>服务名称</strong></td><td>随便起，如 <code>aura-studio</code></td><td>这就是你的 <strong>Bucket 名称</strong></td></tr>
+<tr><td><strong>应用场景</strong></td><td>选 <strong>网页图片</strong> 或 <strong>文件下载</strong></td><td>仅作为管理标记，不影响功能</td></tr>
+<tr><td><strong>存储类型</strong></td><td>选 <strong>标准类型</strong></td><td>普通存储，成本低</td></tr>
+<tr><td><strong>加速区域</strong></td><td>选 <strong>国内加速</strong>（国内用户）或 <strong>全球加速</strong>（海外用户）</td><td>CDN 加速范围</td></tr>
+<tr><td><strong>授权操作员</strong></td><td>选 <strong>新建操作员</strong>（后面要用）</td><td>见第三步</td></tr>
+</table>
+<h3>2.3 确认创建</h3>
+<p>点击 <strong>[创建]</strong>，几秒钟后服务就建好了！</p>
+<blockquote>📸 <strong>截图保存</strong>：创建完成后，在服务列表可以看到你的 <strong>服务名称（Bucket）</strong> 和 <strong>加速域名</strong>，先截图保存！</blockquote>
+
+<h2>👤 第三步：创建操作员并获取表单 API 密钥</h2>
+<div class="important">⚠️ <strong>重要：表单 API 密钥 ≠ 操作员密码，这是两个东西！</strong><br>
+AURA Studio 使用 FORM API 前端直传，需要的是<strong>表单 API 密钥</strong>，不是操作员登录密码。</div>
+
+<h3>3.1 创建操作员</h3>
+<p><strong>方式一：创建服务时同时创建（推荐）</strong></p>
+<p>如果在 2.2 步骤选择了"新建操作员"，会弹出创建框：</p>
+<ol>
+<li>填写 <strong>操作员名称</strong>（如 <code>aura-uploader</code>）</li>
+<li>设置 <strong>操作员密码</strong>（随便设，后面不用它）</li>
+<li>勾选权限：<strong>可读</strong> ✅、<strong>可写</strong> ✅、<strong>可删除</strong> ✅</li>
+<li>点击 <strong>确定</strong></li>
+</ol>
+<p><strong>方式二：在操作员管理页面创建</strong></p>
+<ol>
+<li>进入 <strong>[账号]</strong> → <strong>[账号管理]</strong> → <strong>[操作员管理]</strong></li>
+<li>点击 <strong>[创建操作员]</strong></li>
+<li>填写操作员名称和密码</li>
+<li>点击 <strong>确定</strong></li>
+</ol>
+
+<h3>3.2 授权操作员到服务</h3>
+<blockquote>⚠️ <strong>操作员创建后，需要授权给具体的服务才能使用！</strong></blockquote>
+<ol>
+<li>进入 <strong>[云存储]</strong> → 点击你的服务 → <strong>[配置]</strong> → <strong>[操作员授权]</strong></li>
+<li>点击 <strong>[授权操作员]</strong></li>
+<li>选择刚才创建的操作员</li>
+<li>勾选权限：<strong>可读</strong> ✅、<strong>可写</strong> ✅</li>
+<li>点击 <strong>确定</strong></li>
+</ol>
+
+<h3>3.3 获取表单 API 密钥（关键步骤！）</h3>
+<blockquote>⚠️ 表单 API 密钥在 <strong>[操作员管理]</strong> 页面获取，不是创建操作员时给的密码！</blockquote>
+<ol>
+<li>进入 <strong>[账号]</strong> → <strong>[账号管理]</strong> → <strong>[操作员管理]</strong></li>
+<li><strong>点击操作员名称</strong>（进入详情页，不是点编辑）</li>
+<li>切换到 <strong>[表单 API]</strong> 标签</li>
+<li>点击 <strong>[创建密钥]</strong></li>
+<li>复制生成的 <strong>表单 API 密钥</strong>（只显示一次，务必保存！）</li>
+</ol>
+<table>
+<tr><th>配置项</th><th>对应又拍云字段</th><th>在哪里看</th></tr>
+<tr><td><strong>Access Key (AK)</strong></td><td>操作员名称</td><td>又拍云控制台 → [操作员管理] 页面</td></tr>
+<tr><td><strong>Secret Key (SK)</strong></td><td><strong>表单 API 密钥</strong></td><td>[操作员管理] → 点击操作员 → [表单 API] 标签</td></tr>
+</table>
+<blockquote>💡 <strong>重要提示</strong>：表单 API 密钥创建时只会显示一次，请务必保存好！如果忘记了，只能去 [表单 API] 标签 <strong>重新创建密钥</strong>。</blockquote>
+
+<h2>🌐 第四步：获取加速域名（CDN Domain）</h2>
+<h3>4.1 查看默认加速域名</h3>
+<ol>
+<li>进入 <strong>[云存储]</strong> → 点击你的服务</li>
+<li>在服务列表页面，可以看到 <strong>加速域名</strong> 栏位</li>
+</ol>
+<p>又拍云会给你分配一个默认加速域名，格式类似：</p>
+<pre>http://your-service-name.test.upcdn.net</pre>
+<p>这就是你的 <strong>CDN 域名</strong>，填到 AURA Studio 的 <strong>加速域名</strong> 字段。</p>
+<h3>4.2 （可选）绑定自定义域名</h3>
+<p>如果你想用自己的域名（如 <code>cdn.yourdomain.com</code>）：</p>
+<ol>
+<li>进入服务 → <strong>[配置]</strong> → <strong>[域名管理]</strong></li>
+<li>点击 <strong>[添加域名]</strong></li>
+<li>输入你的域名（需已完成 ICP 备案）</li>
+<li>按提示完成 <strong>CNAME 解析</strong></li>
+<li>解析生效后，用自定义域名填入 AURA Studio</li>
+</ol>
+
+<h2>⚙️ 第五步：在 AURA Studio 中填写配置</h2>
+<h3>5.1 打开配置界面</h3>
+<ol>
+<li>启动 <strong>AURA Studio</strong></li>
+<li>点击右上角 <strong>[设置]</strong> 图标（⚙️）</li>
+<li>选择 <strong>[又拍云配置]</strong> 标签页</li>
+</ol>
+<h3>5.2 填写配置信息</h3>
+<table>
+<tr><th>AURA Studio 字段</th><th>填写内容</th><th>获取位置</th></tr>
+<tr><td><strong>操作员名称（Access Key）</strong></td><td>操作员名称</td><td>又拍云控制台 → [操作员管理]</td></tr>
+<tr><td><strong>表单 API 密钥（Secret Key）</strong></td><td><strong>表单 API 密钥</strong></td><td>[操作员管理] → 点击操作员 → [表单 API] 标签</td></tr>
+<tr><td><strong>服务名称（Bucket）</strong></td><td>服务名称</td><td>又拍云控制台 → [云存储] → 服务列表</td></tr>
+<tr><td><strong>加速域名（CDN）</strong></td><td>加速域名</td><td>又拍云控制台 → [云存储] → 服务列表 → 加速域名栏</td></tr>
+<tr><td><strong>接入端点</strong></td><td><strong>可留空</strong></td><td>FORM API 模式不需要</td></tr>
+</table>
+<div class="warn">⚠️ <strong>常见错误</strong>：把"操作员密码"填到了"表单 API 密钥"字段！这两个是不同的，请务必到 [表单 API] 标签获取正确的密钥。</div>
+<h3>5.3 测试连接</h3>
+<p>填写完成后，点击 <strong>[测试连接]</strong> 按钮：</p>
+<ul>
+<li>✅ <strong>提示"连接成功"</strong> → 配置正确，可以开始用了！</li>
+<li>❌ <strong>提示错误</strong> → 检查以下项：
+  <ol>
+    <li>操作员名称是否填写正确（注意首尾不要有空格）</li>
+    <li><strong>表单 API 密钥</strong> 是否填写正确（⚠️ 不是操作员密码！）</li>
+    <li>操作员是否有 <strong>可写</strong> 权限</li>
+    <li>Bucket 名称是否拼写正确</li>
+    <li>域名是否填写正确</li>
+  </ol>
+</li>
+</ul>
+
+<h2>🧪 第六步：测试图片上传</h2>
+<p>配置完成后，测试一下又拍云是否正常工作：</p>
+<h3>6.1 在主界面测试</h3>
+<ol>
+<li>进入 <strong>[图像生成]</strong> 标签页</li>
+<li>点击 <strong>[上传参考图]</strong></li>
+<li>选择一张本地图片</li>
+<li>如果上传成功，图片会显示在预览区，并且地址是以 <code>http://your-bucket.test.upcdn.net/...</code> 开头的</li>
+</ol>
+<h3>6.2 在画布中测试</h3>
+<ol>
+<li>打开 <strong>画布</strong></li>
+<li>添加一个 <strong>图片节点</strong></li>
+<li>双击节点上传图片</li>
+<li>如果上传成功，节点会显示图片预览</li>
+</ol>
+
+<h2>🆘 常见问题 FAQ</h2>
+
+<h3>Q1：又拍云收费吗？</h3>
+<p><strong>答</strong>：又拍云有免费额度！</p>
+<ul>
+<li><strong>存储</strong>：10 GB 免费</li>
+<li><strong>流量</strong>：15 GB/月 免费</li>
+<li><strong>超出后</strong>：存储 ¥0.12/GB/月，流量 ¥0.5/GB</li>
+</ul>
+<p>对于小范围测试（100 人以内），免费额度完全够用！</p>
+
+<h3>Q2：表单 API 密钥忘记了怎么办？</h3>
+<p><strong>答</strong>：去又拍云控制台重新创建密钥（旧密钥会失效）：</p>
+<ol>
+<li>进入 <strong>[账号]</strong> → <strong>[账号管理]</strong> → <strong>[操作员管理]</strong></li>
+<li>点击对应的操作员</li>
+<li>切换到 <strong>[表单 API]</strong> 标签</li>
+<li>点击 <strong>[创建密钥]</strong></li>
+<li>创建后，更新 AURA Studio 中的 <strong>表单 API 密钥</strong> 配置</li>
+</ol>
+<div class="warn">⚠️ 重新创建密钥后，旧密钥立即失效，请同步更新 AURA Studio 配置！</div>
+
+<h3>Q3：为什么上传图片失败？</h3>
+<p><strong>答</strong>：按以下顺序排查：</p>
+<ol>
+<li>检查 <strong>操作员名称</strong> 是否填写正确</li>
+<li>检查 <strong>表单 API 密钥</strong> 是否填写正确（⚠️ 不是操作员密码！这是最常见的错误）</li>
+<li>检查操作员是否有 <strong>可写</strong> 权限</li>
+<li>检查 <strong>Bucket</strong> 名称是否正确</li>
+<li>检查 <strong>域名</strong> 是否填写正确</li>
+<li>按 <strong>F12</strong> 打开开发者工具，查看 <strong>Console</strong> 标签页的错误信息</li>
+</ol>
+
+<h3>Q4：可以用其他云存储吗？</h3>
+<p><strong>答</strong>：可以！AURA Studio 也支持：</p>
+<ul>
+<li>腾讯云 COS</li>
+<li>AWS S3</li>
+<li>MinIO（本地部署）</li>
+</ul>
+<p>配置方法类似，填写对应的 AK / SK / Bucket / Endpoint 即可。</p>
+
+<h3>Q5：又拍云的图片可以直接在 AURA Studio 中使用吗？</h3>
+<p><strong>答</strong>：可以！上传到又拍云的图片会通过 CDN 加速，在 AURA Studio 中加载速度很快。</p>
+<p>图片 URL 格式：</p>
+<pre>http://your-bucket.test.upcdn.net/ai-studio/abc123.png</pre>
+
+<h2>📞 需要帮助？</h2>
+<ul>
+<li><strong>又拍云官方文档</strong>：<a href="https://help.upyun.com" target="_blank">https://help.upyun.com</a></li>
+<li><strong>又拍云技术支持</strong>：控制台右下角 <strong>[工单系统]</strong></li>
+<li><strong>AURA Studio 技术支持</strong>：加入 QQ 群 [填写你的群号]</li>
+</ul>
+<blockquote>🎉 <strong>配置完成！</strong>现在你可以在 AURA Studio 中愉快地上传和使用图片了！</blockquote>
+
+  </div>
+</div>
+<p style="text-align:center;color:#999;font-size:12px;margin-top:16px">AURA Studio · 又拍云 FORM API 配置指南 · 打印：Ctrl+P</p>
+</body>
+</html>

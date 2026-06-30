@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA Studio 激活面板</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f5f5f7; color: #1d1d1f; padding: 32px;
+  }
+  h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { color: #86868b; font-size: 14px; margin-bottom: 32px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card {
+    background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8ed;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .stat-card .number { font-size: 36px; font-weight: 700; color: #1d1d1f; }
+  .stat-card .label { font-size: 13px; color: #86868b; margin-top: 4px; }
+
+  .section { background: #fff; border-radius: 12px; border: 1px solid #e8e8ed; margin-bottom: 24px; overflow: hidden; }
+  .section-title { font-size: 15px; font-weight: 600; padding: 16px 20px; border-bottom: 1px solid #e8e8ed; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 20px; background: #fafafa; color: #86868b; font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 10px 20px; border-top: 1px solid #f0f0f2; }
+  tr:hover td { background: #fafafa; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+  .badge-warn { background: #fff3cd; color: #856404; }
+  .badge-ok { background: #d4edda; color: #155724; }
+  .badge-info { background: #d1ecf1; color: #0c5460; }
+  .mono { font-family: "SF Mono", "Fira Code", monospace; font-size: 12px; }
+  .text-muted { color: #86868b; }
+</style>
+</head>
+<body>
+
+<h1>AURA Studio 激活面板</h1>
+<p class="subtitle">激活码使用情况统计 · 数据实时</p>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="number">{{ total_activations }}</div>
+    <div class="label">总激活记录</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ total_machines }}</div>
+    <div class="label">独立机器</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ total_licenses }}</div>
+    <div class="label">已使用授权码</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">授权码使用排行（按机器数降序）</div>
+  <table>
+    <thead>
+      <tr>
+        <th>授权码</th>
+        <th>机器数</th>
+        <th>首次激活</th>
+        <th>最近激活</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lic in top_licenses %}
+      <tr>
+        <td class="mono">{{ lic.license_code }}</td>
+        <td>
+          <strong>{{ lic.machine_count }}</strong>
+          {% if lic.machine_count >= 3 %}
+            <span class="badge badge-warn">多机</span>
+          {% endif %}
+        </td>
+        <td class="text-muted">{{ lic.first_seen[:10] }}</td>
+        <td class="text-muted">{{ lic.last_seen[:10] }}</td>
+        <td>
+          {% if lic.machine_count == 1 %}
+            <span class="badge badge-ok">正常</span>
+          {% elif lic.machine_count <= 2 %}
+            <span class="badge badge-info">少量</span>
+          {% else %}
+            <span class="badge badge-warn">请关注</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+      {% if not top_licenses %}
+      <tr><td colspan="5" style="text-align:center;padding:32px;color:#86868b;">暂无数据</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">最近激活记录（最新 100 条）</div>
+  <table>
+    <thead>
+      <tr>
+        <th>时间</th>
+        <th>机器码</th>
+        <th>授权码</th>
+        <th>版本</th>
+        <th>IP</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in recent %}
+      <tr>
+        <td class="text-muted">{{ row.activated_at }}</td>
+        <td class="mono">{{ row.machine_code }}</td>
+        <td class="mono">{{ row.license_code }}</td>
+        <td>{{ row.version or '-' }}</td>
+        <td class="mono">{{ row.ip }}</td>
+      </tr>
+      {% endfor %}
+      {% if not recent %}
+      <tr><td colspan="5" style="text-align:center;padding:32px;color:#86868b;">暂无数据</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

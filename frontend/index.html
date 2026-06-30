@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA — AI Studio</title>
+<link rel="icon" type="image/svg+xml" href="/static/assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'; this.onload=null;">
+<link rel="stylesheet" href="/static/styles/base.css">
+<link rel="stylesheet" href="/static/styles/components.css">
+<link rel="stylesheet" href="/static/styles/panels.css">
+<link rel="stylesheet" href="/static/styles/splash.css">
+</head>
+<body>
+<!-- ========== SPLASH SCREEN ========== -->
+<div class="app-loading" id="appLoading">
+ <div class="splash-bg-particles" id="splashParticles"></div>
+ <svg class="splash-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+   <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#4d8cfc"/>
+    <stop offset="50%" stop-color="#a277ff"/>
+    <stop offset="100%" stop-color="#44eebb"/>
+   </linearGradient>
+   <linearGradient id="sgGlow" x1="0%" y1="0%" x2="100%" y2="200%">
+    <stop offset="0%" stop-color="#4d8cfc" stop-opacity="0.6"/>
+    <stop offset="100%" stop-color="#a277ff" stop-opacity="0"/>
+   </linearGradient>
+  </defs>
+  <!-- Outer glow ring -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="url(#sg)" stroke-width="1" opacity="0.15" class="splash-ring"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#sg)" stroke-width="0.5" stroke-dasharray="30 20" opacity="0.2" class="splash-ring-2"/>
+  <!-- Central diamond -->
+  <path d="M256 80 L380 180 L360 340 L256 420 L152 340 L132 180 Z" fill="url(#sg)" opacity="0.9" class="splash-diamond"/>
+  <path d="M256 140 L340 220 L256 370 L172 220 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <!-- Circuit lines -->
+  <line x1="256" y1="60" x2="256" y2="80" stroke="#44eebb" stroke-width="1" opacity="0.4" class="splash-circuit"/>
+  <line x1="400" y1="180" x2="380" y2="180" stroke="#4d8cfc" stroke-width="1" opacity="0.3" class="splash-circuit"/>
+  <line x1="112" y1="180" x2="132" y2="180" stroke="#a277ff" stroke-width="1" opacity="0.3" class="splash-circuit"/>
+ </svg>
+ <div class="splash-name">AURA <span class="splash-name-accent">Studio</span></div>
+ <div class="splash-tagline" id="splashTagline"></div>
+ <div class="splash-loading-area" id="splashLoadingArea">
+  <div class="splash-loading"><div class="splash-loading-bar" id="splashBar"></div></div>
+  <div class="splash-status" id="splashStatus">启动中…</div>
+  <div style="margin-top:16px;font-size:11px;color:var(--text-muted);">
+   📖 <a href="javascript:openManual()" style="color:var(--text-muted);text-decoration:underline;text-underline-offset:2px;">查看用户手册</a>
+  </div>
+ </div>
+</div>
+
+<div class="app">
+ <!-- Header -->
+ <div class="header">
+<div class="header-left">
+ <svg class="logo-icon" viewBox="0 0 512 512" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+   <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#4d8cfc"/>
+    <stop offset="50%" stop-color="#a277ff"/>
+    <stop offset="100%" stop-color="#44eebb"/>
+   </linearGradient>
+   <filter id="lgGlow">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#4d8cfc" flood-opacity="0.4"/>
+   </filter>
+  </defs>
+  <circle cx="256" cy="256" r="200" fill="none" stroke="url(#lg)" stroke-width="2" opacity="0.3" stroke-dasharray="50 30"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="url(#lg)" stroke-width="1" opacity="0.15" stroke-dasharray="20 40"/>
+  <path d="M256 80 L380 180 L360 340 L256 420 L152 340 L132 180 Z" fill="url(#lg)" opacity="0.9" filter="url(#lgGlow)"/>
+  <path d="M256 140 L340 220 L256 370 L172 220 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+  <line x1="256" y1="60" x2="256" y2="80" stroke="#44eebb" stroke-width="1.5" opacity="0.5"/>
+  <line x1="410" y1="180" x2="390" y2="180" stroke="#4d8cfc" stroke-width="1.5" opacity="0.4"/>
+  <line x1="102" y1="180" x2="122" y2="180" stroke="#a277ff" stroke-width="1.5" opacity="0.4"/>
+  <line x1="256" y1="440" x2="256" y2="420" stroke="#ff6b9d" stroke-width="1" opacity="0.3"/>
+  <circle cx="256" cy="55" r="3" fill="#44eebb" opacity="0.7"/>
+  <circle cx="415" cy="180" r="3" fill="#4d8cfc" opacity="0.6"/>
+  <circle cx="97" cy="180" r="3" fill="#a277ff" opacity="0.6"/>
+  <circle cx="256" cy="445" r="3" fill="#ff6b9d" opacity="0.4"/>
+  <circle cx="256" cy="256" r="6" fill="#fff" opacity="0.15" stroke="#a277ff" stroke-width="0.5"/>
+ </svg>
+ <div class="logo-text">AURA <span>Studio</span></div>
+ <button onclick="showSub()" class="btn-subscribe">🌟 订阅</button>
+</div>
+ <div class="api-key-section">
+  <div class="api-key-header" onclick="this.parentElement.classList.toggle('expanded')">
+   <span class="api-key-title">🔑 API Key</span>
+   <span class="api-key-toggle">▼</span>
+  </div>
+  <div class="api-key-body">
+   <div class="api-key-info">
+    <p>⚠️ 首次使用？请先免费注册获取 API Key，否则所有功能不可用。<br>免费注册即可获得额度，无需付费即可开始使用。</p>
+    <a class="api-key-register" href="https://apihub.agnes-ai.com" target="_blank" rel="noopener">
+     <span>📝 免费注册获取 API Key</span>
+     <span class="api-key-arrow">→</span>
+    </a>
+   </div>
+   <div class="api-key-area">
+    <input class="api-key-input" type="password" id="apiKeyInput" placeholder="粘贴你的 API Key…">
+    <button class="btn-save-key" onclick="saveApiKey()">保存</button>
+   </div>
+  </div>
+ </div><!-- /api-key-section -->
+<div class="header-right">
+<button id="btnAbout" onclick="showAbout()" class="btn-about" title="关于 AURA Studio">ⓘ 关于</button>
+ <button id="btnUpdate" onclick="checkUpdate()" class="btn-about" title="检查更新" style="margin-left:4px">⬆ 更新</button>
+ <button onclick="showSettings()" class="btn-about" title="设置" style="margin-left:4px">⚙️ 设置</button>
+ <button onclick="showModelConfig()" class="btn-about" title="模型配置" style="margin-left:4px">🤖 模型</button>
+ </div>
+ <span id="updateStatus" style="font-size:11px;color:var(--text-muted);margin-left:6px;display:none"></span>
+</div><!-- /header -->
+
+ <!-- Canvas Hero — 独立模块入口 -->
+ <div class="canvas-hero">
+  <a class="canvas-hero-link" href="/static/canvas.html" target="_blank">
+   <span class="canvas-hero-icon">🧩</span>
+   <span class="canvas-hero-body">
+    <span class="canvas-hero-title">无限画布</span>
+    <span class="canvas-hero-desc">节点式可视化工作流 · 拖拽连接 · 自由创作</span>
+   </span>
+   <span class="canvas-hero-arrow">→</span>
+  </a>
+ </div>
+
+ <!-- Tabs -->
+ <div class="tabs">
+ <div class="tab active" data-panel="image" onclick="switchTab('image')">
+ <span class="tab-icon">🖼️</span> 图像生成
+ </div>
+ <div class="tab" data-panel="video" onclick="switchTab('video')">
+ <span class="tab-icon">🎬</span> 视频生成
+ </div>
+<div class="tab" data-panel="text" onclick="switchTab('text')">
+<span class="tab-icon">🤖</span> AI 助理
+ </div>
+ <div class="tab" data-panel="tasks" onclick="switchTab('tasks')">
+ <span class="tab-icon">📋</span> 任务管理
+ </div>
+ </div>
+
+ <div class="panel-container" id="panelContainer">
+
+ <!-- ========== IMAGE PANEL ========== -->
+ <div class="panel active" id="panel-image">
+ <div class="mode-selector">
+ <button class="mode-btn active" data-mode="text-to-image" onclick="setImageMode('text-to-image')">📝 文生图</button>
+ <button class="mode-btn" data-mode="image-to-image" onclick="setImageMode('image-to-image')">🔄 图生图</button>
+ </div>
+ <div class="image-workspace">
+ <div class="image-form-col">
+
+ <!-- Text-to-Image Form -->
+ <div class="card" id="imageFormT2I">
+ <div class="card-title"><span class="dot blue"></span> Text-to-Image 文生图</div>
+ <div class="form-row single">
+ <div class="form-group">
+ <label>Prompt 提示词</label>
+ <div class="prompt-templates" id="imgPromptTemplates">
+  <button class="tmpl-btn" onclick="applyTemplate('imgPrompt','A serene mountain lake at golden hour, mist rising from the water, pine forests surrounding, ultra-detailed, 8K, cinematic lighting, photorealistic')">🏔️ 山水风景</button>
+  <button class="tmpl-btn" onclick="applyTemplate('imgPrompt','A futuristic cyberpunk city at night, neon signs reflecting on wet pavement, flying cars, rain, volumetric lighting, highly detailed')">🌆 赛博朋克</button>
+  <button class="tmpl-btn" onclick="applyTemplate('imgPrompt','A cute fantasy character portrait, soft lighting, detailed eyes, flowing hair, magical glow, anime style, high quality')">🧝 角色设计</button>
+ </div>
+ <textarea id="imgPrompt" placeholder="描述你想要生成的图像…&#10;&#10;推荐结构：[主体] + [场景/环境] + [风格] + [光照] + [构图] + [画质要求]"></textarea>
+ <div class="prompt-enhancer">
+ <button class="btn-enhance" onclick="enhancePrompt('image')">✨ AI 优化提示词</button>
+ <label style="display:inline-flex;align-items:center;gap:6px;margin-left:12px;font-size:12px;color:var(--text-muted);cursor:pointer;">
+  <input type="checkbox" id="chkAutoTranslate" checked style="accent-color:var(--accent-blue);"> 自动翻译为英文
+ </label>
+ </div>
+ <div class="enhanced-prompt" id="imgEnhancedPrompt"></div>
+ </div>
+ </div>
+ <div class="form-group">
+  <label>模型 Model</label>
+  <div class="model-cards">
+   <div class="model-card active" onclick="document.getElementById('imgT2iModel').value='agnes-image-2.1-flash';document.getElementById('imgT2iModelHint').textContent='适合文生图，高细节密度、光影丰富';document.querySelectorAll('.model-card').forEach(m=>m.classList.remove('active'));this.classList.add('active')">
+    <div class="model-card-name">Agnes Image 2.1 Flash</div>
+    <div class="model-card-desc">文生图首选 · 高细节 · 光影丰富</div>
+   </div>
+   <div class="model-card" onclick="document.getElementById('imgT2iModel').value='agnes-image-2.0-flash';document.getElementById('imgT2iModelHint').textContent='适合图生图/图像编辑';document.querySelectorAll('.model-card').forEach(m=>m.classList.remove('active'));this.classList.add('active')">
+    <div class="model-card-name">Agnes Image 2.0 Flash</div>
+    <div class="model-card-desc">图生图/编辑 · 图片改造</div>
+   </div>
+  </div>
+  <input type="hidden" id="imgT2iModel" value="agnes-image-2.1-flash">
+  <div class="hint" id="imgT2iModelHint">适合文生图，高细节密度、光影丰富</div>
+  </div>
+  </div>
+  <div class="form-row">
+  <div class="form-group">
+  <label>尺寸 Size</label>
+  <div class="size-presets" id="imgSizePresets">
+   <div class="size-preset-group">
+    <div class="size-preset-label">横图</div>
+    <button class="size-btn" data-value="1024x768" onclick="selectSize('imgSize','1024x768',this)">1024 × 768 (4:3)</button>
+    <button class="size-btn active" data-value="1152x768" onclick="selectSize('imgSize','1152x768',this)">1152 × 768 (3:2)</button>
+    <button class="size-btn" data-value="1280x720" onclick="selectSize('imgSize','1280x720',this)">1280 × 720 (16:9)</button>
+    <button class="size-btn" data-value="1344x768" onclick="selectSize('imgSize','1344x768',this)">1344 × 768</button>
+    <button class="size-btn" data-value="1536x640" onclick="selectSize('imgSize','1536x640',this)">1536 × 640</button>
+   </div>
+   <div class="size-preset-group">
+    <div class="size-preset-label">方图</div>
+    <button class="size-btn" data-value="1024x1024" onclick="selectSize('imgSize','1024x1024',this)">1024 × 1024</button>
+    <button class="size-btn" data-value="960x960" onclick="selectSize('imgSize','960x960',this)">960 × 960</button>
+   </div>
+   <div class="size-preset-group">
+    <div class="size-preset-label">竖图</div>
+    <button class="size-btn" data-value="768x1024" onclick="selectSize('imgSize','768x1024',this)">768 × 1024 (3:4)</button>
+    <button class="size-btn" data-value="768x1152" onclick="selectSize('imgSize','768x1152',this)">768 × 1152 (2:3)</button>
+    <button class="size-btn" data-value="768x1360" onclick="selectSize('imgSize','768x1360',this)">768 × 1360 (9:16)</button>
+    <button class="size-btn" data-value="720x1280" onclick="selectSize('imgSize','720x1280',this)">720 × 1280</button>
+    <button class="size-btn" data-value="640x1536" onclick="selectSize('imgSize','640x1536',this)">640 × 1536</button>
+   </div>
+  </div>
+  <input type="hidden" id="imgSize" value="1152x768">
+  </div>
+ <div class="form-group">
+ <label>响应格式</label>
+ <select id="imgResponseFormat">
+ <option value="url" selected>URL (返回可访问链接)</option>
+ <option value="b64_json">Base64 (返回编码)</option>
+ </select>
+ </div>
+ </div>
+ <button id="btnT2iGenerate" class="btn-generate" onclick="generateTextToImage()">
+ <span class="spinner"></span>
+ <span class="btn-text">🚀 生成图像</span>
+ </button>
+ <div class="error-msg" id="imgError"></div>
+ </div>
+
+ <!-- Image-to-Image Form -->
+ <div class="card" id="imageFormI2I" style="display:none;">
+ <div class="card-title"><span class="dot purple"></span> Image-to-Image 图生图</div>
+ <div class="form-row single" style="margin-bottom:12px;">
+
+ <div class="form-group">
+ <label>图像模型</label>
+ <select id="imgModel" onchange="updateImgModelHint()">
+ <option value="agnes-image-2.1-flash">AURA Image 2.1（高信息密度）</option>
+ <option value="agnes-image-2.0-flash">AURA Image 2.0（图像编辑）</option>
+ </select>
+ <div class="hint" id="imgModelHint">2.1-flash：适合文生图</div>
+ </div>
+ </div>
+
+ <div class="form-row single">
+ <div class="form-group">
+ <label>参考图像（最多4张，逗号分隔URL或本地上传）</label>
+ <div class="source-input-group" data-group="imgI2iMulti">
+ <div class="source-toggle">
+ <button class="source-toggle-btn active" data-src="url" onclick="switchSource('imgI2iMulti','url')">URL</button>
+ <button class="source-toggle-btn" data-src="upload" onclick="switchSource('imgI2iMulti','upload')">上传</button>
+ </div>
+ <div class="source-url">
+ <input type="text" id="imgMultiUrls" placeholder="https://example.com/img1.png, https://example.com/img2.png" style="width:100%;">
+ </div>
+ <div class="source-upload" style="display:none;">
+ <div class="upload-zone visible" id="imgI2iMultiUploadZone">
+ <div class="upload-zone-icon">&#128206;&#128206;</div>
+ <div class="upload-zone-text">点击或拖拽上传参考图（最多4张）</div>
+ <div class="upload-zone-hint">支持 JPG / PNG / WebP</div>
+ <input type="file" accept="image/*" multiple onchange="handleUpload(this,'imgI2iMulti')">
+ </div>
+ <div class="upload-previews" id="imgI2iMultiPreviews"></div>
+ <div class="upload-count" id="imgI2iMultiCount"></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="form-row single">
+ <div class="form-group">
+ <label>参考图注释（描述每张图的作用，会合成到 Prompt）</label>
+ <div id="imgI2iAnnotations">
+ <div class="url-row" style="margin-top:4px;">
+ <input type="text" placeholder="图1: 主角正面照（保持面部一致性）" style="flex:1;">
+ <span style="font-size:11px;color:var(--text-muted);padding:0 8px;">图1</span>
+ </div>
+ <div class="url-row" style="margin-top:4px;">
+ <input type="text" placeholder="图2: 场景参考（保持环境一致）" style="flex:1;">
+ <span style="font-size:11px;color:var(--text-muted);padding:0 8px;">图2</span>
+ </div>
+ <div class="url-row" style="margin-top:4px;">
+ <input type="text" placeholder="图3: 道具参考（可选）" style="flex:1;">
+ <span style="font-size:11px;color:var(--text-muted);padding:0 8px;">图3</span>
+ </div>
+ <div class="url-row" style="margin-top:4px;">
+ <input type="text" placeholder="图4: 风格参考（可选）" style="flex:1;">
+ <span style="font-size:11px;color:var(--text-muted);padding:0 8px;">图4</span>
+ </div>
+ <div style="margin-top:6px;font-size:11px;color:var(--text-muted);">
+ 描述每张图的作用（角色/场景/道具/风格），会自动合成到 Prompt
+ </div>
+ </div>
+ </div>
+
+
+ <div class="form-row single">
+ <div class="form-group">
+ <label>Prompt 提示词 — 描述需要改变什么 + 保持什么不变</label>
+ <textarea id="imgI2iPrompt" placeholder="Transform the scene into a rain-soaked cyberpunk night with neon reflections while preserving the original composition and main subjects."></textarea>
+ <div class="prompt-enhancer">
+ <button class="btn-enhance" onclick="enhancePrompt('i2i')">✨ AI 优化提示词</button>
+ </div>
+ <div class="enhanced-prompt" id="imgI2iEnhancedPrompt"></div>
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group">
+ <label>输出尺寸</label>
+ <div class="size-presets" id="imgI2iSizePresets">
+  <div class="size-preset-group">
+   <div class="size-preset-label">横图</div>
+   <button class="size-btn" data-value="1024x768" onclick="selectSize('imgI2iSize','1024x768',this)">1024 × 768 (4:3)</button>
+   <button class="size-btn active" data-value="1152x768" onclick="selectSize('imgI2iSize','1152x768',this)">1152 × 768 (3:2)</button>
+   <button class="size-btn" data-value="1280x720" onclick="selectSize('imgI2iSize','1280x720',this)">1280 × 720 (16:9)</button>
+   <button class="size-btn" data-value="1344x768" onclick="selectSize('imgI2iSize','1344x768',this)">1344 × 768</button>
+   <button class="size-btn" data-value="1536x640" onclick="selectSize('imgI2iSize','1536x640',this)">1536 × 640</button>
+  </div>
+  <div class="size-preset-group">
+   <div class="size-preset-label">方图</div>
+   <button class="size-btn" data-value="1024x1024" onclick="selectSize('imgI2iSize','1024x1024',this)">1024 × 1024</button>
+   <button class="size-btn" data-value="960x960" onclick="selectSize('imgI2iSize','960x960',this)">960 × 960</button>
+  </div>
+  <div class="size-preset-group">
+   <div class="size-preset-label">竖图</div>
+   <button class="size-btn" data-value="768x1024" onclick="selectSize('imgI2iSize','768x1024',this)">768 × 1024 (3:4)</button>
+   <button class="size-btn" data-value="768x1152" onclick="selectSize('imgI2iSize','768x1152',this)">768 × 1152 (2:3)</button>
+   <button class="size-btn" data-value="768x1360" onclick="selectSize('imgI2iSize','768x1360',this)">768 × 1360 (9:16)</button>
+   <button class="size-btn" data-value="720x1280" onclick="selectSize('imgI2iSize','720x1280',this)">720 × 1280</button>
+   <button class="size-btn" data-value="640x1536" onclick="selectSize('imgI2iSize','640x1536',this)">640 × 1536</button>
+  </div>
+ </div>
+ <input type="hidden" id="imgI2iSize" value="1152x768">
+ </div>
+ <div class="form-group">
+ <label>响应格式</label>
+ <select id="imgI2iResponseFormat">
+ <option value="url" selected>URL</option>
+ </select>
+ </div>
+ </div>
+ <button id="btnI2iGenerate" class="btn-generate" onclick="generateImageToImage()">
+ <span class="spinner"></span>
+ <span class="btn-text">🔄 转换图像</span>
+ </button>
+ <div class="error-msg" id="imgI2iError"></div>
+ </div>
+
+ <!-- Image Result -->
+ <div class="result-area" id="imgResult" style="display:none;"></div>
+
+ <!-- Image Gallery -->
+ <div id="imageGallerySection" style="display:none;">
+ <div class="card"><div class="gallery" id="imageGallery"></div></div>
+ </div>
+ </div><!-- /image-form-col -->
+ <div class="image-result-col" id="imageResultCol">
+  <div class="result-header">最新结果</div>
+  <div class="thumb-grid" id="imageThumbGrid"><div class="thumb-empty">暂无结果</div></div>
+  <div class="result-header">历史生成</div>
+  <div class="thumb-grid" id="imageGalleryThumbs"><div class="thumb-empty">暂无记录</div></div>
+ </div>
+ </div><!-- /image-workspace -->
+</div><!-- /panel-image -->
+
+<!-- Image Full Preview Modal -->
+<div class="modal-overlay" id="imagePreviewModal" onclick="this.classList.remove('show')">
+ <div class="modal-card" style="max-width:95vw;max-height:95vh;text-align:center;background:var(--bg-deep);" onclick="event.stopPropagation()">
+  <img id="imagePreviewImg" style="max-width:100%;max-height:75vh;object-fit:contain;border-radius:8px;" alt="Preview">
+  <div class="result-url" style="margin-top:12px;display:flex;">
+   <input type="text" id="imagePreviewUrl" readonly>
+   <button class="btn-copy" onclick="copyUrl('imagePreviewUrl')">📋</button>
+  </div>
+  <button class="btn-generate" onclick="document.getElementById('imagePreviewModal').classList.remove('show')" style="margin-top:10px;padding:8px 24px;font-size:13px;">关闭</button>
+ </div>
+</div>
+
+ <!-- ========== TEXT PANEL ========== -->
+ <div class="panel" id="panel-text">
+ <div class="card" style="padding:16px;">
+ <div class="chat-layout">
+ <!-- Left sidebar - Session Directory -->
+ <div class="chat-leftbar">
+  <div class="leftbar-header">
+   <span class="leftbar-title">📋 会话</span>
+   <button class="leftbar-new-btn" onclick="newSession()" title="新会话">＋</button>
+   <span class="leftbar-count" id="leftbarCount">0</span>
+  </div>
+  <div class="leftbar-list" id="leftbarList"></div>
+
+  <!-- Agent 管理菜单 -->
+  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+   <div class="leftbar-section" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+    <span style="font-size:11px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:4px;">🧠 Agent 管理 <span style="margin-left:auto;font-size:10px;">▼</span></span>
+   </div>
+   <div id="agentManagement" style="display:none;padding:4px 0;">
+    <!-- 记忆 -->
+    <div class="leftbar-item" onclick="showAgentPanel('memory')" style="cursor:pointer;padding:6px 8px;font-size:11px;color:var(--text-secondary);border-radius:4px;display:flex;align-items:center;gap:6px;">
+     <span>🧠</span> 记忆 <span id="memoryCount" style="margin-left:auto;font-size:10px;color:var(--text-muted);">0</span>
+    </div>
+    <!-- 知识 -->
+    <div class="leftbar-item" onclick="showAgentPanel('knowledge')" style="cursor:pointer;padding:6px 8px;font-size:11px;color:var(--text-secondary);border-radius:4px;display:flex;align-items:center;gap:6px;">
+     <span>📚</span> 知识库 <span id="knowledgeCount" style="margin-left:auto;font-size:10px;color:var(--text-muted);">0</span>
+    </div>
+    <!-- 技能 -->
+    <div class="leftbar-item" onclick="showAgentPanel('skills')" style="cursor:pointer;padding:6px 8px;font-size:11px;color:var(--text-secondary);border-radius:4px;display:flex;align-items:center;gap:6px;">
+     <span>🧩</span> 技能 <span id="skillsCount" style="margin-left:auto;font-size:10px;color:var(--text-muted);">0</span>
+    </div>
+    <!-- 进化 -->
+    <div class="leftbar-item" onclick="showAgentPanel('evolution')" style="cursor:pointer;padding:6px 8px;font-size:11px;color:var(--text-secondary);border-radius:4px;display:flex;align-items:center;gap:6px;">
+      <span>🔄</span> 进化日志
+     </div>
+    </div>
+</div>
+
+	  <!-- 已安装技能（可切换开关） -->
+	  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+	   <div class="leftbar-section" onclick="toggleSkillsList()">
+	    <span style="font-size:11px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:4px;">🧩 已安装技能 <span id="skillsToggleArrow" style="margin-left:auto;font-size:10px;">▼</span></span>
+	   </div>
+	   <div id="skillsToggleList" style="max-height:200px;overflow-y:auto;padding:4px 0;display:none;">
+	    <div style="text-align:center;font-size:10px;color:var(--text-muted);padding:8px;">加载中…</div>
+	   </div>
+	  </div>
+
+	  <!-- 使用说明 -->
+   <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+    <div class="leftbar-item" onclick="showHelpDoc()" style="cursor:pointer;padding:6px 8px;font-size:11px;color:var(--text-secondary);border-radius:4px;display:flex;align-items:center;gap:6px;">
+     <span>📖</span> 使用说明
+    </div>
+   </div>
+  </div>
+
+  <!-- Chat main area -->
+ <div class="chat-main">
+ <div class="chat-messages" id="chatMessages">
+ <div style="text-align:center;color:var(--text-muted);padding:60px 20px;">
+ <div style="font-size:40px;margin-bottom:12px;opacity:0.5;">💬</div>
+ <div style="font-size:14px;margin-bottom:4px;">Agnes 2.0 Flash</div>
+ <div style="font-size:12px;">256K 上下文 | 最大 65.5K tokens 输出 | 支持流式输出</div>
+ <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">输入你的问题开始对话</div>
+ </div>
+ </div>
+<div id="agentSteps" class="agent-steps-container" style="max-height:160px;overflow-y:auto;"></div>
+   <div class="chat-input-area">
+    <div style="display:flex;gap:8px;align-items:flex-end;width:100%;">
+     <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+      <div id="chatImagePreview" style="display:none;gap:6px;flex-wrap:wrap;padding:4px 0;">
+       <div style="position:relative;width:64px;height:64px;border-radius:6px;overflow:hidden;border:1px solid var(--border);">
+        <img id="chatPreviewImg" style="width:100%;height:100%;object-fit:cover;">
+        <button style="position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;border:none;background:var(--accent-red);color:#fff;font-size:11px;cursor:pointer;line-height:18px;text-align:center;padding:0;" onclick="removeChatImage()">×</button>
+       </div>
+      </div>
+      <textarea id="chatInput" placeholder="输入消息… (Enter 发送, Shift+Enter 换行)" rows="1" onkeydown="handleChatKey(event)"></textarea>
+     </div>
+     <button class="btn-upload-img" id="btnChatImage" title="上传图片" onclick="document.getElementById('chatImageInput').click()" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">🖼️</button>
+     <input type="file" id="chatImageInput" accept="image/*" style="display:none" onchange="handleChatImage(this)">
+     <button class="btn-send" id="btnSend" onclick="handleSendClick()">
+      <span id="btnSendText">发送</span>
+      <span class="spinner" id="btnSendSpinner" style="display:none;width:16px;height:16px;border-width:2px;margin-right:0;"></span>
+     </button>
+    </div>
+   </div>
+ </div>
+
+ <!-- Sidebar -->
+ <div class="chat-sidebar">
+
+ <!-- Agent 模式状态 -->
+ <div style="margin-bottom:12px;padding:10px 12px;background:linear-gradient(135deg,rgba(158,206,106,0.1),rgba(68,238,187,0.06));border:1px solid rgba(158,206,106,0.25);border-radius:var(--radius-md);display:flex;align-items:center;gap:8px;">
+  <span style="font-size:16px;">🧠</span>
+  <div>
+   <div style="font-size:12px;font-weight:600;color:var(--accent-green);">Agent 模式已开启</div>
+   <div style="font-size:10px;color:var(--text-muted);">AI 自主规划 · 工具调用 · 多步推理</div>
+  </div>
+ </div>
+
+ <div class="sidebar-label">💬 系统提示词 System Prompt</div>
+ <textarea class="sidebar-textarea" id="chatSystemPrompt" placeholder="You are a helpful assistant."></textarea>
+
+<label class="stream-toggle" style="margin-bottom:8px;">
+ <input type="checkbox" id="chatDeepThink">
+ <span class="stream-indicator"></span>
+ <span>🧠 深度思考（仅 agnes 模型，耗 token）</span>
+</label>
+
+ <!-- 高级设置折叠 -->
+ <div class="advanced-toggle" onclick="this.classList.toggle('open');document.getElementById('chatAdvanced').classList.toggle('show')" style="cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 0;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:4px;padding-top:10px;">
+  <span style="font-size:10px;transition:transform 0.2s;">▶</span> 高级参数
+ </div>
+ <div id="chatAdvanced" style="display:none;margin-top:8px;">
+  <div class="sidebar-label">🌡️ 温度 Temperature</div>
+  <input class="sidebar-input" type="range" id="chatTemperature" min="0" max="2" step="0.1" value="0.7" oninput="document.getElementById('tempVal').textContent=this.value">
+  <span style="font-size:11px;color:var(--text-muted);text-align:center;" id="tempVal">0.7</span>
+
+  <div class="sidebar-label">📏 最大输出 Max Tokens</div>
+  <input class="sidebar-input" type="number" id="chatMaxTokens" value="65536" min="1" max="65536">
+
+  <div class="sidebar-label">🎯 Top-P</div>
+  <input class="sidebar-input" type="range" id="chatTopP" min="0" max="1" step="0.05" value="0.9" oninput="document.getElementById('topPVal').textContent=this.value">
+  <span style="font-size:11px;color:var(--text-muted);text-align:center;" id="topPVal">0.9</span>
+ </div>
+
+ <label class="stream-toggle">
+ <input type="checkbox" id="chatStreaming" checked>
+ <span class="stream-indicator"></span>
+ <span>⚡ 流式输出</span>
+ </label>
+<label class="stream-toggle" style="margin-bottom:12px;">
+ <span style="font-size:11px;color:var(--accent-green);margin-left:4px;">🤖 Agent 模式已启用（工具调用+记忆+技能）</span>
+</label>
+
+  <div class="sidebar-label">🤖 模型选择</div>
+  <div class="model-cards" id="chatModelCards" style="margin-bottom:12px">
+   <div style="font-size:11px;color:var(--text-muted);padding:8px;">加载中…</div>
+  </div>
+  <input type="hidden" id="chatModel" value="agnes-2.0-flash">
+
+  <button class="btn-sidebar" onclick="exportChatHistory()">📥 导出对话</button>
+  <button class="btn-sidebar clear" onclick="clearChat()">🗑️ 清除对话</button>
+
+  <!-- 帮助文档 -->
+  <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">
+   <button class="btn-sidebar" onclick="showHelpDoc()" style="width:100%;justify-content:center;">📖 使用说明</button>
+  </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- ========== VIDEO PANEL ========== -->
+ <div class="panel" id="panel-video">
+ <div class="mode-selector">
+ <button class="mode-btn active" data-vmode="text-to-video" onclick="setVideoMode('text-to-video')">📝 文生视频</button>
+ <button class="mode-btn" data-vmode="image-to-video" onclick="setVideoMode('image-to-video')">🖼️ 图生视频</button>
+ <button class="mode-btn" data-vmode="multi-image" onclick="setVideoMode('multi-image')">🖼️🖼️ 多图视频</button>
+ <button class="mode-btn" data-vmode="keyframes" onclick="setVideoMode('keyframes')">🎞️ 关键帧动画</button>
+ <label style="display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12px;color:var(--text-muted);cursor:pointer;white-space:nowrap;">
+  <input type="checkbox" id="chkVideoAutoTranslate" checked style="accent-color:var(--accent-blue);"> 自动翻译为英文
+ </label>
+ </div>
+
+ <!-- Text-to-Video -->
+ <div class="card" id="videoFormT2V">
+ <div class="card-title"><span class="dot blue"></span> Text-to-Video 文生视频</div>
+ <div class="form-row single">
+ <div class="form-group">
+ <label>Prompt 提示词 — 推荐结构：[主体] + [动作] + [场景] + [镜头运动] + [光照] + [风格]</label>
+ <div class="prompt-templates" id="vidPromptTemplates">
+  <button class="tmpl-btn" onclick="applyTemplate('vidPrompt','Cinematic drone shot flying over a vast canyon at sunrise, golden light illuminating red rock formations, dramatic shadows, slow reveal, majestic atmosphere, 4K')">🎬 航拍大片</button>
+  <button class="tmpl-btn" onclick="applyTemplate('vidPrompt','A woman walking through a rainy city street at night, neon reflections on wet pavement, slow motion, cinematic lighting, soft focus background, film grain')">🌃 城市夜色</button>
+  <button class="tmpl-btn" onclick="applyTemplate('vidPrompt','A magical forest with fireflies floating among ancient trees, dappled sunlight, gentle camera pan, ethereal atmosphere, nature documentary style')">🌲 魔法森林</button>
+ </div>
+ <textarea id="vidPrompt" placeholder="A cinematic shot of a cat walking on the beach at sunset, soft ocean waves, warm golden light, slow dolly camera movement, film-like quality"></textarea>
+ <div class="prompt-enhancer">
+ <button class="btn-enhance" onclick="enhancePrompt('video')">✨ AI 优化提示词</button>
+ </div>
+ <div class="enhanced-prompt" id="vidEnhancedPrompt"></div>
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>宽度</label><input type="number" id="vidWidth" value="1152" min="64" max="2048"></div>
+ <div class="form-group"><label>高度</label><input type="number" id="vidHeight" value="768" min="64" max="2048"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>时长(秒)</label><input type="number" id="vidDuration" value="5" step="0.5" min="1" max="30" onchange="updateVidParams('t2v')"></div>
+ <div class="form-group"><label>帧率</label><select id="vidFps" onchange="updateVidParams('t2v')"><option value="24" selected>24</option><option value="30">30</option><option value="60">60</option></select></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>计算帧数: <span id="vidFramesShow">121</span> 帧</label><input type="hidden" id="vidFrames" value="121"></div>
+ <div class="form-group"><label>视频时长: <span id="vidDurationShow">~5.0s</span></label></div>
+ </div>
+ <div class="advanced-toggle" onclick="toggleAdvanced('vidAdvancedT2V')">
+ <span class="arrow">▶</span> 高级设置
+ </div>
+ <div class="advanced-settings" id="vidAdvancedT2V">
+ <div class="form-row">
+ <div class="form-group"><label>推理步数</label><input type="number" id="vidSteps" value="30" min="1" max="100"></div>
+ <div class="form-group"><label>随机种子 (留空=随机)</label><input type="number" id="vidSeed" placeholder="例如: 42"></div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group">
+ <label>负向提示词 Negative Prompt</label>
+ <input type="text" id="vidNegativePrompt" placeholder="blurry, distorted, low quality, jittery">
+ </div>
+ </div>
+ </div>
+ <button class="btn-generate" onclick="createVideoTask('text-to-video')">
+ <span class="spinner"></span>
+ <span class="btn-text">🎬 创建视频任务</span>
+ </button>
+ <div class="error-msg" id="vidError"></div>
+ </div>
+
+ <!-- Image-to-Video -->
+ <div class="card" id="videoFormI2V" style="display:none;">
+ <div class="card-title"><span class="dot purple"></span> Image-to-Video 图生视频</div>
+ <div class="source-input-group" data-group="vidI2v">
+ <div class="source-toggle">
+ <button class="source-toggle-btn active" data-src="url" onclick="switchSource('vidI2v','url')">🔗 URL 输入</button>
+ <button class="source-toggle-btn" data-src="upload" onclick="switchSource('vidI2v','upload')">📁 本地上传</button>
+ </div>
+ <div class="source-url">
+ <div class="form-row single">
+ <div class="form-group"><label>输入图像 URL</label><input type="text" id="vidI2vUrl" placeholder="https://example.com/image.png"></div>
+ </div>
+ </div>
+ <div class="source-upload" style="display:none;">
+ <div class="upload-zone visible" id="vidI2vUploadZone">
+ <div class="upload-zone-icon">📁</div>
+ <div class="upload-zone-text">点击或拖拽上传参考图像</div>
+ <div class="upload-zone-hint">支持 JPG / PNG / WebP，最大 20MB</div>
+ <input type="file" accept="image/*" onchange="handleUpload(this,'vidI2v')">
+ </div>
+ <div class="upload-previews" id="vidI2vPreviews"></div>
+ <div class="upload-count" id="vidI2vCount"></div>
+ </div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group">
+ <label>Prompt — 描述需要运动的元素，同时保持主体稳定</label>
+ <textarea id="vidI2vPrompt" placeholder="The woman slowly turns around and looks back at the camera, natural facial expressions, gentle movement"></textarea>
+ <div class="prompt-enhancer">
+ <button class="btn-enhance" onclick="enhancePrompt('i2v')">✨ AI 优化提示词</button>
+ </div>
+ <div class="enhanced-prompt" id="vidI2vEnhancedPrompt"></div>
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>宽度</label><input type="number" id="vidI2vWidth" value="1152"></div>
+ <div class="form-group"><label>高度</label><input type="number" id="vidI2vHeight" value="768"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>时长(秒)</label><input type="number" id="vidI2vDuration" value="5" step="0.5" min="1" max="30" onchange="updateVidParams('i2v')"></div>
+ <div class="form-group"><label>帧率</label><select id="vidI2vFps" onchange="updateVidParams('i2v')"><option value="24" selected>24</option><option value="30">30</option><option value="60">60</option></select></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>计算帧数: <span id="vidI2vFramesShow">121</span> 帧</label><input type="hidden" id="vidI2vFrames" value="121"></div>
+ </div>
+ <div class="advanced-toggle" onclick="toggleAdvanced('vidAdvancedI2V')">
+ <span class="arrow">▶</span> 高级设置
+ </div>
+ <div class="advanced-settings" id="vidAdvancedI2V">
+ <div class="form-row">
+ <div class="form-group"><label>推理步数</label><input type="number" id="vidI2vSteps" value="30"></div>
+ <div class="form-group"><label>随机种子</label><input type="number" id="vidI2vSeed" placeholder="42"></div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group"><label>负向提示词</label><input type="text" id="vidI2vNegativePrompt" placeholder="blurry, distorted, low quality"></div>
+ </div>
+ </div>
+ <button class="btn-generate" onclick="createVideoTask('image-to-video')">
+ <span class="spinner"></span>
+ <span class="btn-text">🎬 创建视频任务</span>
+ </button>
+ <div class="error-msg" id="vidI2vError"></div>
+ </div>
+
+ <!-- Multi-Image Video -->
+ <div class="card" id="videoFormMulti" style="display:none;">
+ <div class="card-title"><span class="dot cyan"></span> Multi-Image Video 多图视频</div>
+ <div class="source-input-group" data-group="vidMulti">
+ <div class="source-toggle">
+ <button class="source-toggle-btn active" data-src="url" onclick="switchSource('vidMulti','url')">🔗 URL 输入</button>
+ <button class="source-toggle-btn" data-src="upload" onclick="switchSource('vidMulti','upload')">📁 多图上传</button>
+ </div>
+ <div class="source-url">
+ <div class="form-row single">
+ <div class="form-group"><label>参考图像 URL（至少2张）</label>
+ <div class="url-list" id="vidMultiUrls">
+ <div class="url-row"><input type="text" placeholder="https://example.com/image1.png"><button class="btn-remove-url" onclick="removeUrl(this)" title="移除">×</button></div>
+ <div class="url-row"><input type="text" placeholder="https://example.com/image2.png"><button class="btn-remove-url" onclick="removeUrl(this)" title="移除">×</button></div>
+ </div>
+ <button class="btn-add-url" style="margin-top:8px;width:auto;padding:6px 14px;" onclick="addUrl('vidMultiUrls')">+ 添加 URL</button>
+ </div>
+ </div>
+ </div>
+ <div class="source-upload" style="display:none;">
+ <div class="upload-zone visible" id="vidMultiUploadZone">
+ <div class="upload-zone-icon">📁📁</div>
+ <div class="upload-zone-text">点击或拖拽上传多张参考图像</div>
+ <div class="upload-zone-hint">至少 2 张，支持 JPG / PNG / WebP，最大 20MB/张</div>
+ <input type="file" accept="image/*" multiple onchange="handleUpload(this,'vidMulti')">
+ </div>
+ <div class="upload-previews" id="vidMultiPreviews"></div>
+ <div class="upload-count" id="vidMultiCount"></div>
+ </div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group">
+ <label>Prompt — 描述图像之间的过渡关系</label>
+ <textarea id="vidMultiPrompt" placeholder="Use the first image as the starting scene and the second as the target. Create a smooth, cinematic transformation between them."></textarea>
+ <div class="prompt-enhancer">
+ <button class="btn-enhance" onclick="enhancePrompt('multi')">✨ AI 优化提示词</button>
+ </div>
+ <div class="enhanced-prompt" id="vidMultiEnhancedPrompt"></div>
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>宽度</label><input type="number" id="vidMultiWidth" value="1152"></div>
+ <div class="form-group"><label>高度</label><input type="number" id="vidMultiHeight" value="768"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>时长(秒)</label><input type="number" id="vidMultiDuration" value="5" step="0.5" min="1" max="30" onchange="updateVidParams('multi')"></div>
+ <div class="form-group"><label>帧率</label><select id="vidMultiFps" onchange="updateVidParams('multi')"><option value="24" selected>24</option><option value="30">30</option><option value="60">60</option></select></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>计算帧数: <span id="vidMultiFramesShow">121</span> 帧</label><input type="hidden" id="vidMultiFrames" value="121"></div>
+ </div>
+ <div class="advanced-toggle" onclick="toggleAdvanced('vidAdvancedMulti')">
+ <span class="arrow">▶</span> 高级设置
+ </div>
+ <div class="advanced-settings" id="vidAdvancedMulti">
+ <div class="form-row">
+ <div class="form-group"><label>推理步数</label><input type="number" id="vidMultiSteps" value="30"></div>
+ <div class="form-group"><label>随机种子</label><input type="number" id="vidMultiSeed" placeholder="42"></div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group"><label>负向提示词</label><input type="text" id="vidMultiNegativePrompt" placeholder="blurry, distorted, low quality"></div>
+ </div>
+ </div>
+ <button class="btn-generate" onclick="createVideoTask('multi-image')">
+ <span class="spinner"></span>
+ <span class="btn-text">🎬 创建视频任务</span>
+ </button>
+ <div class="error-msg" id="vidMultiError"></div>
+ </div>
+
+ <!-- Keyframe Animation -->
+ <div class="card" id="videoFormKeyframes" style="display:none;">
+ <div class="card-title"><span class="dot pink"></span> Keyframe Animation 关键帧动画</div>
+ <div class="source-input-group" data-group="vidKey">
+ <div class="source-toggle">
+ <button class="source-toggle-btn active" data-src="url" onclick="switchSource('vidKey','url')">🔗 URL 输入</button>
+ <button class="source-toggle-btn" data-src="upload" onclick="switchSource('vidKey','upload')">📁 多图上传</button>
+ </div>
+ <div class="source-url">
+ <div class="form-row single">
+ <div class="form-group"><label>关键帧图像 URL（2张或更多）</label>
+ <div class="url-list" id="vidKeyUrls">
+ <div class="url-row"><input type="text" placeholder="https://example.com/keyframe1.png"><button class="btn-remove-url" onclick="removeUrl(this)" title="移除">×</button></div>
+ <div class="url-row"><input type="text" placeholder="https://example.com/keyframe2.png"><button class="btn-remove-url" onclick="removeUrl(this)" title="移除">×</button></div>
+ </div>
+ <button class="btn-add-url" style="margin-top:8px;width:auto;padding:6px 14px;" onclick="addUrl('vidKeyUrls')">+ 添加关键帧</button>
+ </div>
+ </div>
+ </div>
+ <div class="source-upload" style="display:none;">
+ <div class="upload-zone visible" id="vidKeyUploadZone">
+ <div class="upload-zone-icon">🎞️</div>
+ <div class="upload-zone-text">点击或拖拽上传关键帧图像</div>
+ <div class="upload-zone-hint">至少 2 张，按上传顺序排列。支持 JPG / PNG / WebP</div>
+ <input type="file" accept="image/*" multiple onchange="handleUpload(this,'vidKey')">
+ </div>
+ <div class="upload-previews" id="vidKeyPreviews"></div>
+ <div class="upload-count" id="vidKeyCount"></div>
+ </div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group">
+ <label>Prompt — 描述关键帧之间的过渡</label>
+ <textarea id="vidKeyPrompt" placeholder="Generate a smooth cinematic transition between the keyframes, maintaining visual consistency of the subject throughout the animation."></textarea>
+ <div class="prompt-enhancer">
+ <button class="btn-enhance" onclick="enhancePrompt('keyframes')">✨ AI 优化提示词</button>
+ </div>
+ <div class="enhanced-prompt" id="vidKeyEnhancedPrompt"></div>
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>宽度</label><input type="number" id="vidKeyWidth" value="1152"></div>
+ <div class="form-group"><label>高度</label><input type="number" id="vidKeyHeight" value="768"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>时长(秒)</label><input type="number" id="vidKeyDuration" value="5" step="0.5" min="1" max="30" onchange="updateVidParams('key')"></div>
+ <div class="form-group"><label>帧率</label><select id="vidKeyFps" onchange="updateVidParams('key')"><option value="24" selected>24</option><option value="30">30</option><option value="60">60</option></select></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label>计算帧数: <span id="vidKeyFramesShow">121</span> 帧</label><input type="hidden" id="vidKeyFrames" value="121"></div>
+ </div>
+ <div class="advanced-toggle" onclick="toggleAdvanced('vidAdvancedKey')">
+ <span class="arrow">▶</span> 高级设置
+ </div>
+ <div class="advanced-settings" id="vidAdvancedKey">
+ <div class="form-row">
+ <div class="form-group"><label>推理步数</label><input type="number" id="vidKeySteps" value="30"></div>
+ <div class="form-group"><label>随机种子</label><input type="number" id="vidKeySeed" placeholder="42"></div>
+ </div>
+ <div class="form-row single">
+ <div class="form-group"><label>负向提示词</label><input type="text" id="vidKeyNegativePrompt" placeholder="blurry, distorted, low quality, morphing artifacts"></div>
+ </div>
+ </div>
+ <button class="btn-generate" onclick="createVideoTask('keyframes')">
+ <span class="spinner"></span>
+ <span class="btn-text">🎬 创建关键帧动画任务</span>
+ </button>
+ <div class="error-msg" id="vidKeyError"></div>
+ </div>
+
+ <!-- Video Result -->
+ <div class="result-area" id="vidResult">
+ <div class="card">
+ <div class="card-title"><span class="dot cyan"></span> 视频结果</div>
+ <video class="result-video" id="vidResultVideo" controls></video>
+ <div class="result-url" id="vidResultUrlArea" style="display:none;">
+ <input type="text" id="vidResultUrl" readonly>
+ <button class="btn-copy" onclick="copyUrl('vidResultUrl')">📋 复制</button>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- ========== TASKS PANEL ========== -->
+ <div class="panel" id="panel-tasks">
+ <div class="card">
+ <div class="card-title"><span class="dot cyan"></span> 视频任务管理</div>
+ <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;line-height:1.6;padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid var(--border);">
+  每个视频任务拥有唯一的 <strong style="color:var(--accent-blue);font-family:'JetBrains Mono',monospace;">video_id</strong>，任务完成后可点击"播放"查看结果。<br>
+  如遇获取失败，可点击 🔄 刷新单个任务或 📥 强制获取。
+ </div>
+ <div style="display:flex;gap:10px;margin-bottom:16px;">
+ <button class="btn-save-key" style="background:var(--bg-elevated);border:1px solid var(--border);" onclick="refreshAllTasks()">🔄 刷新全部</button>
+ <button class="btn-save-key" style="background:var(--bg-elevated);border:1px solid rgba(247,118,142,0.3);color:var(--accent-red);" onclick="clearAllTasks()">🗑️ 清除已完成</button>
+ </div>
+<div style="display:flex;gap:8px;margin-bottom:12px;padding:8px;background:var(--bg-surface);border-radius:var(--radius-sm);">
+  <input type="text" id="taskQueryInput" placeholder="输入 video_id 或 task_id 查询..." style="flex:1;padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-size:12px;">
+  <button class="btn-save-key" onclick="queryVideoTask()" style="white-space:nowrap;">查询</button>
+</div>
+ <div class="task-list" id="taskList">
+ <div style="text-align:center;color:var(--text-muted);padding:40px;">暂无任务，创建视频任务后将在此显示。</div>
+ </div>
+ </div>
+
+ <!-- Task Video Preview -->
+ <div class="result-area" id="taskResult">
+ <div class="card">
+ <div class="card-title"><span class="dot cyan"></span> 任务视频</div>
+ <video class="result-video" id="taskResultVideo" controls></video>
+ </div>
+ </div>
+ </div><!-- /panel-tasks -->
+</div><!-- /panel-container -->
+
+</div><!-- /app -->
+
+<script src="/static/scripts/app.js"></script>
+<script src="/static/scripts/modules/chat_stream.js"></script>
+<script src="/static/scripts/modules/agent/agent-ui.js"></script>
+<script src="/static/scripts/modules/agent/agent.js"></script>
+<script src="/static/scripts/modules/agent/agent_panel.js"></script>
+<!-- ========== ABOUT DIALOG ========== -->
+<div class="modal-overlay" id="aboutOverlay" onclick="hideAbout(event)">
+ <div class="modal-card about-card" onclick="event.stopPropagation()">
+  <button class="modal-close" onclick="hideAbout()">×</button>
+  <div class="about-hero">
+   <svg viewBox="0 0 512 512" width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4d8cfc"/><stop offset="50%" stop-color="#a277ff"/><stop offset="100%" stop-color="#44eebb"/></linearGradient></defs>
+    <path d="M256 80 L380 180 L360 340 L256 420 L152 340 L132 180 Z" fill="url(#lg2)" opacity="0.9"/>
+    <path d="M256 140 L340 220 L256 370 L172 220 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+   </svg>
+   <div class="about-name">AURA Studio</div>
+   <div class="about-version">v1.0.0</div>
+  </div>
+  <div class="about-body">
+   <div class="about-desc">基于 Agnes AI 的多模态创作工作台</div>
+   <div class="about-tagline">AI 助理 · 图像生成 · 视频生成 · 无限画布</div>
+   <div class="about-divider"></div>
+   <div class="about-tech">
+    <span>⚡ 前端：HTML + CSS + JS</span>
+    <span>⚙️ 后端：Python FastAPI</span>
+    <span>🧠 模型：Agnes AI (2.0 Flash)</span>
+   </div>
+   <div class="about-divider"></div>
+   <div class="about-legal">基于 Agnes AI 官方 API 构建 · 二次开发合规</div>
+   <a class="api-key-register" href="https://apihub.agnes-ai.com" target="_blank" rel="noopener" style="margin-top:8px;justify-content:center;font-size:12px;">
+    📝 免费注册获取 API Key →
+   </a>
+  </div>
+ </div>
+</div>
+
+<!-- ========== SUBSCRIPTION DIALOG ========== -->
+<div class="modal-overlay" id="subOverlay" onclick="hideSub(event)">
+ <div class="modal-card sub-card" onclick="event.stopPropagation()">
+  <button class="modal-close" onclick="hideSub()">×</button>
+  <div class="sub-hero">
+   <div class="sub-icon">🌟</div>
+   <div class="sub-name">订阅方案</div>
+   <div class="sub-badge">开发中</div>
+  </div>
+  <div class="sub-body">
+   <div class="sub-desc">当前版本全功能免费开放</div>
+   <div class="sub-divider"></div>
+   <div class="sub-plans">
+    <div class="sub-plan">
+     <div class="sub-plan-name">免费版</div>
+     <div class="sub-plan-status active">✓ 现行可用</div>
+     <div class="sub-plan-features">
+      <span>✅ 全部模块开放</span>
+      <span>✅ AI 助理 · 图像生成 · 视频生成</span>
+      <span>✅ 无限画布 · 任务管理</span>
+     </div>
+    </div>
+    <div class="sub-plan coming">
+     <div class="sub-plan-name">订阅版</div>
+     <div class="sub-plan-status pending">⏳ 规划中</div>
+     <div class="sub-plan-features">
+      <span>🔒 高级功能即将推出</span>
+      <span>🔒 更多模型 · 更高配额</span>
+      <span>🔒 专属技术支持</span>
+     </div>
+    </div>
+   </div>
+   <div class="sub-divider"></div>
+   <div class="sub-footer">敬请期待后续版本更新</div>
+  </div>
+</div>
+
+<!-- ========== 设置面板 ========== -->
+<div class="modal-overlay" id="settingsOverlay" onclick="hideSettings(event)">
+ <div class="modal-card" onclick="event.stopPropagation()" style="max-width:560px;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <button class="modal-close" onclick="hideSettings()">×</button>
+  <div class="about-hero">
+   <svg class="about-logo" viewBox="0 0 512 512" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4d8cfc"/><stop offset="50%" stop-color="#a277ff"/><stop offset="100%" stop-color="#44eebb"/></linearGradient></defs>
+    <path d="M256 80 L380 180 L360 340 L256 420 L152 340 L132 180 Z" fill="url(#sg2)" opacity="0.9"/>
+   </svg>
+   <div class="about-name">⚙️ 设置</div>
+  </div>
+  <div class="about-body">
+   <div class="settings-section">
+    <div class="settings-section-title">⏱️ 轮询</div>
+    <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
+     <div><div class="label">轮询间隔（秒）</div><input id="setPollSeconds" class="modal-input" type="number" value="22" min="5" max="120"></div>
+     <div><div class="label">超时（分钟）</div><input id="setTimeoutMin" class="modal-input" type="number" value="20" min="1" max="60"></div>
+    </div>
+   </div>
+   <div class="settings-divider"></div>
+   <div class="settings-section">
+    <div class="settings-section-title">☁️ 对象存储（S3 兼容）</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;line-height:1.5">用于图片上传和生成结果的保存。支持又拍云、腾讯 COS、AWS S3、MinIO 等 S3 兼容服务。</div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;padding:8px 10px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border);">
+     还没有又拍云账号？<a href="https://console.upyun.com/register/?invite=R3d6kOy0E" target="_blank" rel="noopener" style="color:var(--accent-blue);text-decoration:none;font-weight:500;">点此注册 →</a>
+    </div>
+    <div style="display:grid;gap:10px">
+     <div><div class="label">Access Key</div><input id="setAk" class="modal-input" placeholder="upyun_ak"></div>
+     <div><div class="label">Secret Key</div><input id="setSk" class="modal-input" type="password" placeholder="upyun_sk"></div>
+     <div><div class="label">Bucket（存储桶）</div><input id="setBucket" class="modal-input" placeholder="your_bucket"></div>
+     <div><div class="label">加速域名</div><input id="setDomain" class="modal-input" placeholder="your_domain.test.upcdn.net"></div>
+     <div><div class="label">接入端点</div><input id="setEndpoint" class="modal-input" placeholder="https://s3.api.upyun.com"></div>
+    </div>
+   </div>
+   <div class="settings-divider"></div>
+   <div class="settings-section">
+    <div class="settings-section-title">🧠 向量记忆（Embedding）</div>
+    <div style="display:grid;gap:8px;grid-template-columns:1fr 1fr">
+     <div><div class="label">API 地址</div><input id="setEmbedBase" class="modal-input" placeholder="https://api.openai.com/v1"></div>
+     <div><div class="label">API Key</div><input id="setEmbedKey" class="modal-input" type="password" placeholder="sk-..."></div>
+     <div><div class="label">模型名</div><input id="setEmbedModel" class="modal-input" placeholder="text-embedding-3-small"></div>
+     <div><div class="label">向量维度</div><input id="setEmbedDim" class="modal-input" type="number" placeholder="1024" value="1024"></div>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">留空则仅使用关键词检索</div>
+   </div>
+   <div id="settingsMsg" style="font-size:12px;margin-top:12px;min-height:20px"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+     <button class="btn-generate" onclick="saveAllSettings()" style="flex:1;padding:10px;font-size:13px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border:none">💾 保存全部设置</button>
+     <button onclick="aura.openDocs()" style="padding:10px 14px;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);cursor:pointer">📖 使用文档</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- ========== 模型配置弹窗 ========== -->
+<div class="modal-overlay" id="modelConfigOverlay" onclick="hideModelConfig(event)">
+ <div class="modal-card" onclick="event.stopPropagation()" style="max-width:600px;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <button class="modal-close" onclick="hideModelConfig()">×</button>
+  <div class="about-hero">
+   <div class="about-name">🤖 模型配置</div>
+  </div>
+  <div class="about-body">
+   <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">
+    文本、图片、视频三个区独立配置。每个模型可单独设置 API 接入点和密钥（留空则用全局）。点"默认"设为该区默认模型。
+   </div>
+   <div id="modelConfigBody">加载中…</div>
+   <div id="modelConfigMsg" style="font-size:12px;margin-top:12px;min-height:20px"></div>
+   <div style="display:flex;gap:8px;margin-top:14px">
+    <button class="btn-generate" onclick="saveModelConfig()" style="flex:1;padding:10px;font-size:13px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));border:none">💾 保存配置</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- ========== 欢迎引导弹窗 ========== -->
+<div class="modal-overlay" id="welcomeOverlay" onclick="event.stopPropagation()">
+ <div class="modal-card" onclick="event.stopPropagation()" style="max-width:440px;text-align:center">
+  <div class="about-hero">
+   <svg class="about-logo" viewBox="0 0 512 512" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="wg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4d8cfc"/><stop offset="50%" stop-color="#a277ff"/><stop offset="100%" stop-color="#44eebb"/></linearGradient></defs>
+    <path d="M256 80 L380 180 L360 340 L256 420 L152 340 L132 180 Z" fill="url(#wg)" opacity="0.9"/>
+   </svg>
+   <div class="about-name">欢迎使用 AURA Studio</div>
+   <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">AI 多模态创作工作台</div>
+  </div>
+  <div class="about-body">
+   <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;text-align:left;padding:0 4px;">
+    <p style="margin-bottom:10px;">🚀 开始使用前，请先配置 API Key：</p>
+    <ol style="padding-left:20px;margin:0;">
+     <li style="margin-bottom:8px">点击下方按钮免费注册获取 API Key</li>
+     <li style="margin-bottom:8px">注册后创建 API Key，粘贴到下方输入框</li>
+     <li style="margin-bottom:6px">点击 <strong style="color:var(--accent-green)">开始使用</strong></li>
+    </ol>
+   </div>
+   <a class="api-key-register" href="https://apihub.agnes-ai.com" target="_blank" rel="noopener" style="margin-bottom:12px;justify-content:center;">
+    <span>📝 免费注册获取 API Key</span>
+    <span class="api-key-arrow">→</span>
+   </a>
+   <div class="api-key-area" style="margin-bottom:12px">
+    <input class="api-key-input" type="password" id="welcomeKeyInput" placeholder="粘贴你的 API Key…" style="width:100%;">
+   </div>
+   <button class="btn-generate" onclick="saveWelcomeKey()" style="width:100%;padding:12px;font-size:15px;font-weight:600;">🚀 开始使用</button>
+   <div style="margin-top:14px;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;text-align:left;font-size:11px;color:var(--text-muted);line-height:1.6;">
+    <div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">💡 建议配置对象存储</div>
+    <p style="margin:0 0 6px 0;">
+     <strong>图生视频</strong> 功能需要先将图片上传到对象存储（OSS），以 URL 方式提交给 API。
+     Base64 格式有概率任务失败，使用对象存储更稳定。
+     推荐免费注册
+     <a href="https://console.upyun.com/register/?invite=R3d6kOy0E" target="_blank" rel="noopener" style="color:var(--accent-blue);text-decoration:none;font-weight:500;">又拍云</a>，
+     新用户有免费额度，无需付费即可使用。
+     （后期 API 官方适配后可能不再需要）
+    </p>
+    <p style="margin:0 0 4px 0;">进入主界面后点击右上角 <strong style="color:var(--text-primary)">⚙️ 设置</strong> → <strong style="color:var(--text-primary)">对象存储</strong> 完成配置。</p>
+   </div>
+   <div style="margin-top:10px;font-size:11px;color:var(--text-muted);cursor:pointer;" onclick="skipWelcome()">稍后再说</div>
+  </div>
+ </div>
+</div>
+
+<!-- Agent 管理弹窗 -->
+<div class="modal-overlay" id="agentPanelOverlay" onclick="hideAgentPanel(event)">
+ <div class="modal-card" onclick="event.stopPropagation()" style="max-width:600px;max-height:80vh;overflow-y:auto;">
+  <button class="modal-close" onclick="hideAgentPanel()">×</button>
+  <div id="agentPanelContent"></div>
+ </div>
+</div>
+
+<!-- 帮助文档弹窗 -->
+<div class="modal-overlay" id="helpDocOverlay" onclick="if(event.target===this)hideHelpDoc()" style="display:none;">
+ <div class="modal-card" onclick="event.stopPropagation()" style="max-width:700px;max-height:85vh;overflow-y:auto;">
+  <button class="modal-close" onclick="hideHelpDoc()">×</button>
+  <div style="padding:24px;">
+   <h2 style="margin:0 0 20px;font-size:20px;color:var(--text-primary);display:flex;align-items:center;gap:10px;">
+    <span style="font-size:24px;">📖</span> AURA Studio AI 助理使用说明
+   </h2>
+
+   <div style="margin-bottom:20px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">🧠 Agent 模式是什么？</h3>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin:0;">
+     Agent 模式让 AI 不只是回答问题，而是能够<strong>自主规划任务、调用工具、多步推理</strong>来完成复杂的创作需求。
+     例如你说"帮我生成一个赛博朋克风格的城市夜景图，然后基于它做一个10秒的视频"，AI 会自动拆解为两步并依次执行。
+    </p>
+   </div>
+
+   <div style="margin-bottom:20px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">🛠️ 可用工具</h3>
+    <div style="display:grid;gap:8px;">
+     <div style="padding:10px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;color:var(--text-primary);">🖌️ 文生图 (image_generate)</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">根据文字描述生成图片。支持多种尺寸：1024x1024, 1152x768, 768x1024 等。</div>
+     </div>
+     <div style="padding:10px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;color:var(--text-primary);">🎬 视频生成 (video_create)</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">根据文字或参考图片生成视频。支持文生视频和图生视频。</div>
+     </div>
+     <div style="padding:10px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;color:var(--text-primary);">🧩 画布节点 (canvas_create_node)</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">在无限画布上创建文本、图片或生成任务节点。</div>
+     </div>
+    </div>
+   </div>
+
+   <div style="margin-bottom:20px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">💡 使用技巧</h3>
+    <ul style="font-size:13px;color:var(--text-secondary);line-height:2;margin:0;padding-left:20px;">
+     <li><strong>明确需求</strong>：描述越具体，AI 执行越准确。如"生成一张 1152x768 的赛博朋克城市夜景"比"生成一张图片"更好。</li>
+     <li><strong>多步任务</strong>：可以直接描述复合需求，AI 会自动拆解执行。如"先生成角色设计图，再基于它生成视频"。</li>
+     <li><strong>引用画布</strong>：AI 可以在无限画布上创建节点，方便后续编辑和连线。</li>
+     <li><strong>深度思考</strong>：勾选后 AI 先推理再执行（仅 agnes 模型支持，会额外消耗 token）。</li>
+     <li><strong>系统提示词</strong>：在左侧设置系统提示词，定义 AI 的创作风格和偏好。</li>
+    </ul>
+   </div>
+
+   <div style="margin-bottom:20px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">🧠 记忆系统</h3>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin:0;">
+     AI 助理会自动记忆你的对话和偏好：<br>
+     • <strong>上下文记忆</strong>：当前对话的消息历史<br>
+     • <strong>每日摘要</strong>：每天对话的关键信息摘要<br>
+     • <strong>核心记忆</strong>：你的长期偏好和常用设置
+    </p>
+   </div>
+
+   <div style="margin-bottom:20px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">📚 知识库</h3>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin:0;">
+     AI 会自动从对话中提取知识并分类存储：<br>
+     • <strong>角色</strong>：你描述的人物信息<br>
+     • <strong>场景</strong>：环境和背景设定<br>
+     • <strong>道具</strong>：物品和元素描述<br>
+     • <strong>风格</strong>：视觉风格偏好<br>
+     知识库支持搜索，方便复用之前的设定。
+    </p>
+   </div>
+
+   <div style="margin-bottom:20px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">🧩 技能系统</h3>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin:0;">
+     内置 4 个创作技能：<br>
+     • <strong>剧本分镜</strong>：将剧本拆解为分镜头脚本<br>
+     • <strong>角色设计</strong>：生成角色概念图<br>
+     • <strong>场景概念</strong>：生成场景概念图<br>
+     • <strong>视频分镜</strong>：生成视频分镜脚本<br>
+     你也可以在左侧"技能管理"中创建自定义技能。
+    </p>
+   </div>
+
+   <div style="margin-bottom:16px;">
+    <h3 style="font-size:15px;color:var(--accent-purple);margin:0 0 10px;">🔄 自我进化</h3>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;margin:0;">
+     AI 会在空闲时自动回顾对话，提取有价值的信息更新记忆和知识库。
+     随着使用时间增长，AI 会越来越了解你的创作风格和偏好。
+     也可以在左侧"进化日志"中手动触发进化。
+    </p>
+   </div>
+
+   <div style="padding:12px;background:rgba(77,140,252,0.08);border:1px solid rgba(77,140,252,0.2);border-radius:var(--radius-md);font-size:12px;color:var(--text-secondary);">
+    <strong style="color:var(--accent-blue);">💡 提示</strong>：所有记忆和知识数据存储在本地，不会上传到云端。你可以随时在左侧管理菜单中查看和清理。
+   </div>
+  </div>
+ </div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,54 @@
+# ========== Node ==========
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========== Build outputs ==========
+build/
+release/
+release2/
+dist/
+frontend-dist/
+*.exe
+*.dmg
+*.msi
+
+# ========== Python ==========
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ========== Logs ==========
+*.log
+app.log
+backend/app.log
+
+# ========== IDE ==========
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========== OS ==========
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ========== Environment ==========
+.env
+backend/config.json
+
+# ========== License tools (not shipped) ==========
+gen_license.py
+gen-license.bat
+
+# ========== Config ==========
+config/user_config.json
+user_config.json
+nul

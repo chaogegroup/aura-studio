@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4d8cfc"/>
+      <stop offset="50%" style="stop-color:#a277ff"/>
+      <stop offset="100%" style="stop-color:#44eebb"/>
+    </linearGradient>
+    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#a277ff"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="none" stroke="url(#logoGrad)" stroke-width="8" opacity="0.15"/>
+  <!-- Outer ring segments -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="url(#logoGrad)" stroke-width="3" stroke-dasharray="40 30" opacity="0.25"/>
+  <!-- Central diamond/gem shape -->
+  <path d="M256 80 L380 180 L360 340 L256 420 L152 340 L132 180 Z" fill="url(#logoGrad)" opacity="0.9"/>
+  <path d="M256 80 L256 420" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <path d="M132 180 L380 180" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <!-- Inner diamond -->
+  <path d="M256 140 L340 220 L256 370 L172 220 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <!-- Sparkle / star at top -->
+  <g transform="translate(256, 60)">
+    <path d="M0 -20 L4 -6 L18 -4 L6 4 L10 18 L0 8 L-10 18 L-6 4 L-18 -4 L-4 -6 Z" fill="url(#sparkleGrad)" opacity="0.9"/>
+  </g>
+  <!-- Small dots orbiting -->
+  <circle cx="256" cy="50" r="3" fill="#4d8cfc" opacity="0.5"/>
+  <circle cx="380" cy="180" r="3" fill="#a277ff" opacity="0.4"/>
+  <circle cx="130" cy="180" r="3" fill="#44eebb" opacity="0.4"/>
+  <circle cx="256" cy="445" r="3" fill="#ff6b9d" opacity="0.3"/>
+</svg>

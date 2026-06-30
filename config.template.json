@@ -1,0 +1,7 @@
+{
+  "upyun_ak": "your_upyun_access_key",
+  "upyun_sk": "your_upyun_secret_key",
+  "upyun_bucket": "your_bucket_name",
+  "upyun_domain": "your_domain.test.upcdn.net",
+  "upyun_endpoint": "https://s3.api.upyun.com"
+}

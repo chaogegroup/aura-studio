@@ -1,0 +1,9 @@
+{
+  "name": "research",
+  "description": "网络调研技能，获取和分析网络信息",
+  "prompt": "当用户需要调研信息时：\n1. 使用 web_fetch 获取相关内容\n2. 分析并总结关键信息\n3. 用中文向用户汇报结果，附来源",
+  "tools": [
+    "web_fetch"
+  ],
+  "category": "utility"
+}

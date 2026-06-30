@@ -1,0 +1,14 @@
+{
+  "name": "file-operations",
+  "description": "本地文件操作：读、写、编辑、搜索",
+  "prompt": "当用户需要操作本地文件时：\n1. 使用 ls 列出目录内容\n2. 使用 read 读取文件内容\n3. 使用 write 写入新文件\n4. 使用 edit 修改文件中的特定部分\n5. 使用 grep 在文件中搜索文本\n操作完成后向用户汇报结果",
+  "tools": [
+    "read",
+    "write",
+    "edit",
+    "bash",
+    "ls",
+    "grep"
+  ],
+  "category": "utility"
+}

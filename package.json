@@ -1,0 +1,104 @@
+{
+  "name": "aura-studio",
+  "version": "2.4.0",
+  "description": "AURA Studio — AI 多模态创作工作台（文本对话 · 图像生成 · 视频生成 · 无限画布）",
+  "author": "JC <jc@aura-studio.dev>",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "homepage": "https://github.com/chaogegroup/aura-studio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chaogegroup/aura-studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chaogegroup/aura-studio/issues"
+  },
+  "keywords": [
+    "ai",
+    "electron",
+    "image-generation",
+    "video-generation",
+    "infinite-canvas",
+    "multimodal",
+    "fastapi",
+    "desktop-app"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build:frontend": "node scripts/build-frontend.js",
+    "build:backend": "node scripts/build-backend.js",
+    "build:pack": "electron-builder --win --x64",
+    "dist": "npm run build:frontend && npm run build:backend && npm run build:pack"
+  },
+  "build": {
+    "appId": "com.aura.studio",
+    "productName": "AURA Studio",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "frontend-dist/**/*",
+      "electron/**/*",
+      "package.json",
+      "node_modules/electron-updater/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "build/",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "skills/",
+        "to": "backend/skills",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "docs/",
+        "to": "../docs",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "frontend-dist/assets/logo.ico",
+      "artifactName": "AURA-Studio-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "chaogegroup",
+      "repo": "aura-studio"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "electron/**"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
+    "terser": "^5.37.0"
+  },
+  "dependencies": {
+    "docx": "^9.7.1",
+    "electron-updater": "^6.8.3"
+  }
+}

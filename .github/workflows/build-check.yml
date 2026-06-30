@@ -1,0 +1,28 @@
+name: Build Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend-build:
+    name: 前端构建验证
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 安装依赖
+        run: npm install
+
+      - name: 前端构建
+        run: npm run build:frontend
+        # 验证前端构建脚本可正常执行（复制 + terser 压缩）
+        # 后端 PyInstaller 构建依赖 Windows 环境，在 CI 中跳过
