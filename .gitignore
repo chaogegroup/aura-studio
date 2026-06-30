@@ -19,6 +19,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.egg-info/
+*.spec
 .venv/
 venv/
 env/

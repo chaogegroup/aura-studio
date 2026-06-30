@@ -143,6 +143,7 @@ npm run dev
 
 ## 🙏 致谢
 
+- [CowAgent](https://github.com/zhayujie) (MIT, Copyright 2022 zhayujie) — AI 助理的 Agent 协议、记忆、知识库、技能、进化等核心能力基于 CowAgent 移植适配，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 - [Electron](https://www.electronjs.org/) · [FastAPI](https://fastapi.tiangolo.com/) · [electron-builder](https://www.electron.build/)
 - [又拍云](https://www.upyun.com/) S3 兼容存储
 - 所有为这个项目提供建议与反馈的朋友
