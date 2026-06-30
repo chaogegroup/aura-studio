@@ -13,8 +13,8 @@
 本地打包成 tar 或用 scp 上传：
 
 ```bash
-# 在本机打包 server 目录
-cd F:\灵山出图\chaoge-ai-studio-v2
+# 在本机打包 server 目录（在项目根目录执行）
+cd /path/to/aura-studio
 tar czf aura-server.tar.gz server/
 
 # 上传到 Linux 服务器（替换成你的 IP）

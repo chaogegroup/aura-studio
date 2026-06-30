@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
         Header, Footer, AlignmentType, HeadingLevel, BorderStyle, WidthType,
         ShadingType, LevelFormat, PageBreak, PageNumber, ExternalHyperlink,
@@ -317,7 +318,7 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then(buffer => {
-  const outPath = "F:\\灵山出图\\chaoge-ai-studio-v2\\release\\AURA-Studio-v2.0-用户手册-v2.docx";
+  const outPath = path.join(__dirname, '..', 'release', 'AURA-Studio-v2.0-用户手册-v2.docx');
   fs.writeFileSync(outPath, buffer);
   console.log("用户手册已生成: " + outPath);
   console.log("大小: " + (buffer.length / 1024).toFixed(1) + " KB");

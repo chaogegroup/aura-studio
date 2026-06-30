@@ -1,6 +1,6 @@
 import subprocess, os, shutil, tempfile
 
-root = r'F:\灵山出图\chaoge-ai-studio-v2'
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 tmp = tempfile.mkdtemp(prefix='asar_')
 
 os.makedirs(os.path.join(tmp, 'frontend-dist'), exist_ok=True)
